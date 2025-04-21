@@ -33,13 +33,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double _horizontalValue = 50;
   double _verticalValue = 50;
-  
+
   final SliderController _horizontalController = SliderController(
     initialValue: 50,
     min: 0,
     max: 100,
   );
-  
+
   final SliderController _verticalController = SliderController(
     initialValue: 50,
     min: 0,
@@ -74,11 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
               controller: _horizontalController,
               config: SliderConfig(
                 min: 0,
+                direction: SliderDirection.horizontal,
                 max: 100,
                 initialValue: 50,
                 showLabel: true,
                 labelFormat: (value) => value.toInt().toString(),
-                trackConfig: const TrackConfig(
+                trackConfig: TrackConfig(
                   activeColor: Colors.blue,
                   inactiveColor: Colors.grey.shade300,
                   height: 8,
@@ -98,17 +99,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               },
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             Text('Current value: ${_horizontalValue.toInt()}'),
-            
+
             const SizedBox(height: 32),
-            
+
             const Text(
               'Vertical Slider',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: 200,
@@ -121,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       direction: SliderDirection.vertical,
                       showLabel: true,
                       labelFormat: (value) => value.toInt().toString(),
-                      trackConfig: const TrackConfig(
+                      trackConfig: TrackConfig(
                         activeColor: Colors.green,
                         inactiveColor: Colors.grey.shade300,
                         height: 8,
@@ -147,22 +149,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text('Current value: ${_verticalValue.toInt()}'),
               ],
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             const Text(
               'Custom Styling Examples',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            
+
             // Custom styled slider 1
             SliderBar(
               config: SliderConfig(
                 min: 0,
                 max: 100,
                 initialValue: 30,
-                trackConfig: const TrackConfig(
+                trackConfig: TrackConfig(
                   activeColor: Colors.purple,
                   inactiveColor: Colors.purple.shade100,
                   height: 12,
@@ -178,16 +180,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            
-            const SizedBox(height: 16),
-            
+
+            const SizedBox(height: 24),
+
             // Custom styled slider 2
             SliderBar(
               config: SliderConfig(
                 min: 0,
                 max: 100,
                 initialValue: 70,
-                trackConfig: const TrackConfig(
+                trackConfig: TrackConfig(
                   activeColor: Colors.orange,
                   inactiveColor: Colors.grey.shade200,
                   height: 4,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'controllers/slider_controller.dart';
 import 'enums/slider_direction.dart';
 import 'models/slider_config.dart';
@@ -55,7 +56,7 @@ class _SliderBarState extends State<SliderBar> {
   @override
   void didUpdateWidget(SliderBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     if (widget._controller != oldWidget._controller) {
       oldWidget._controller?.removeListener(_handleControllerChanged);
       _controller = widget._controller ??
@@ -99,46 +100,48 @@ class _SliderBarState extends State<SliderBar> {
   void _updateValueFromGlobalPosition(Offset globalPosition) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final localPosition = renderBox.globalToLocal(globalPosition);
-    
+
     double percentage;
     if (widget.config.direction == SliderDirection.horizontal) {
       percentage = (localPosition.dx / renderBox.size.width).clamp(0.0, 1.0);
     } else {
       // For vertical slider, we invert the percentage (bottom = 0, top = 1)
-      percentage = (1.0 - localPosition.dy / renderBox.size.height).clamp(0.0, 1.0);
+      percentage =
+          (1.0 - localPosition.dy / renderBox.size.height).clamp(0.0, 1.0);
     }
-    
+
     _controller.value = _controller.valueFromPercentage(percentage);
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool isHorizontal = widget.config.direction == SliderDirection.horizontal;
+    final bool isHorizontal =
+        widget.config.direction == SliderDirection.horizontal;
     final trackConfig = widget.config.trackConfig;
     final thumbConfig = widget.config.thumbConfig;
-    
+
     // Calculate the position of the thumb
     final percentage = _controller.percentage;
-    
+
     // Build the slider based on direction
     return LayoutBuilder(
       builder: (context, constraints) {
         final double maxWidth = constraints.maxWidth;
         final double maxHeight = constraints.maxHeight;
-        
+
         // Determine track dimensions
-        final double trackWidth = isHorizontal 
-            ? trackConfig.width ?? maxWidth 
-            : trackConfig.height;
-        final double trackHeight = isHorizontal 
-            ? trackConfig.height 
-            : trackConfig.width ?? maxHeight;
-        
+        final double trackWidth =
+            isHorizontal ? trackConfig.width ?? maxWidth : trackConfig.height;
+        final double trackHeight =
+            isHorizontal ? trackConfig.height : trackConfig.width ?? maxHeight;
+
         // Calculate thumb position
         final double thumbPosition = isHorizontal
-            ? percentage * (trackWidth - thumbConfig.width) + thumbConfig.width / 2
-            : (1 - percentage) * (trackHeight - thumbConfig.height) + thumbConfig.height / 2;
-        
+            ? percentage * (trackWidth - thumbConfig.width) +
+                thumbConfig.width / 2
+            : (1 - percentage) * (trackHeight - thumbConfig.height) +
+                thumbConfig.height / 2;
+
         return GestureDetector(
           onHorizontalDragStart: isHorizontal ? _handleDragStart : null,
           onHorizontalDragUpdate: isHorizontal ? _handleDragUpdate : null,
@@ -146,9 +149,9 @@ class _SliderBarState extends State<SliderBar> {
           onVerticalDragStart: !isHorizontal ? _handleDragStart : null,
           onVerticalDragUpdate: !isHorizontal ? _handleDragUpdate : null,
           onVerticalDragEnd: !isHorizontal ? _handleDragEnd : null,
-          child: Container(
-            width: isHorizontal ? trackWidth : null,
-            height: !isHorizontal ? trackHeight : null,
+          child: SizedBox(
+            width: isHorizontal ? trackWidth : trackConfig.height,
+            height: isHorizontal ? trackConfig.height : trackHeight,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -168,11 +171,14 @@ class _SliderBarState extends State<SliderBar> {
                     ),
                   ),
                 ),
-                
+
                 // Thumb
                 Positioned(
-                  left: isHorizontal ? thumbPosition - thumbConfig.width / 2 : 0,
-                  top: !isHorizontal ? thumbPosition - thumbConfig.height / 2 : 0,
+                  left:
+                      isHorizontal ? thumbPosition - thumbConfig.width / 2 : 0,
+                  top: !isHorizontal
+                      ? thumbPosition - thumbConfig.height / 2
+                      : 0,
                   child: CustomPaint(
                     painter: SliderThumbPainter(
                       thumbConfig: thumbConfig,
@@ -183,7 +189,7 @@ class _SliderBarState extends State<SliderBar> {
                     ),
                   ),
                 ),
-                
+
                 // Label (if enabled)
                 if (widget.config.showLabel)
                   Positioned(
@@ -196,7 +202,7 @@ class _SliderBarState extends State<SliderBar> {
                           ? widget.config.labelFormat!(_controller.value)
                           : _controller.value.toStringAsFixed(1),
                       style: widget.config.labelStyle ??
-                          TextStyle(
+                          const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),

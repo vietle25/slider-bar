@@ -1,6 +1,6 @@
 name: slider_bar
 description: "A customizable slider widget for Flutter applications with extensive styling options."
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/vietle25/slider-bar
 repository: https://github.com/vietle25/slider-bar
 issue_tracker: https://github.com/vietle25/slider-bar/issues

@@ -2,6 +2,11 @@
 
 A highly customizable slider widget for Flutter applications. This package provides a slider that can be extensively styled and configured to match your app's design.
 
+## Demo
+
+<img width="500" alt="Slider demo" src="https://github.com/user-attachments/assets/81aaab92-b232-4b7d-9cc3-fc7abaa44abc" />
+
+
 ## Features
 
 - Horizontal and vertical slider orientations
